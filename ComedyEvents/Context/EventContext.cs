@@ -54,14 +54,14 @@ namespace ComedyEvents.Context
                 .HasData(new
                 {
                     GigId = 1,
-                    VenueId = 1,
+                    EventId = 1,
                     ComedianId = 1,
                     GigHeadline = "Pavols Funny Show",
                     GigLengthInMinutes = 60
                 }, new
                 {
                     GigId = 2,
-                    VenueId = 1,
+                    EventId = 1,
                     ComedianId = 2,
                     GigHeadline = "Lifetime Of Fun",
                     GigLengthInMinutes = 45

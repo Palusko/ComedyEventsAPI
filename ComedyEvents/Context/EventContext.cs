@@ -11,7 +11,7 @@ namespace ComedyEvents.Context
     public class EventContext : DbContext
     {
         private readonly IConfiguration _configuration;
-        public EventContext(IConfiguration configration, DbContextOptions options) : base (options)
+        public EventContext(DbContextOptions options, IConfiguration configration) : base (options)
         {
             _configuration = configration;
         }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComedyEvents.Migrations
 {
     [DbContext(typeof(EventContext))]
-    [Migration("20190516025321_InitialMigration")]
+    [Migration("20190521025631_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,6 +109,7 @@ namespace ComedyEvents.Migrations
                         {
                             GigId = 1,
                             ComedianId = 1,
+                            EventId = 1,
                             GigHeadline = "Pavols Funny Show",
                             GigLengthInMinutes = 60
                         },
@@ -116,6 +117,7 @@ namespace ComedyEvents.Migrations
                         {
                             GigId = 2,
                             ComedianId = 2,
+                            EventId = 1,
                             GigHeadline = "Lifetime Of Fun",
                             GigLengthInMinutes = 45
                         });

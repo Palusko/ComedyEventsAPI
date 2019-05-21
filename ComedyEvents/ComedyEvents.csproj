@@ -6,6 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190520034228_relationships.cs" />
+    <Compile Remove="Migrations\20190520034228_relationships.Designer.cs" />
+    <Compile Remove="Migrations\20190521000151_fix.cs" />
+    <Compile Remove="Migrations\20190521000151_fix.Designer.cs" />
+    <Compile Remove="Migrations\20190521002936_secondMigration.cs" />
+    <Compile Remove="Migrations\20190521002936_secondMigration.Designer.cs" />
+    <Compile Remove="Migrations\20190521003146_third.cs" />
+    <Compile Remove="Migrations\20190521003146_third.Designer.cs" />
+    <Compile Remove="Migrations\20190521003210_fourth.cs" />
+    <Compile Remove="Migrations\20190521003210_fourth.Designer.cs" />
+    <Compile Remove="Migrations\20190521003452_newDb.cs" />
+    <Compile Remove="Migrations\20190521003452_newDb.Designer.cs" />
+    <Compile Remove="Migrations\20190521004042_newDb.cs" />
+    <Compile Remove="Migrations\20190521004042_newDb.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>

@@ -20,7 +20,7 @@ namespace ComedyEvents.Services
 
         //Gigs
         Task<Gig[]> GetGigsByEvent(int eventId, bool includeComedians = false);
-        Task<Gig> GetGigByEvent(int eventId, int gigId, bool includeComedians = false);
+        Task<Gig> GetGig(int gigId, bool includeComedians = false);
         Task<Gig[]> GetGigsByVenue(int venueId, bool includeComedians = false);
 
         //comedians

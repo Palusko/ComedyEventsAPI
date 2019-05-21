@@ -117,24 +117,23 @@ namespace ComedyEvents.Services
             return await query.ToArrayAsync();
         }
 
-        public async Task<Gig> GetGigByEvent(int eventId, int gigId, bool includeComedians = false)
+        public async Task<Gig> GetGig(int gigId, bool includeComedians = false)
         {
-            _logger.LogInformation($"Getting gig with id {gigId} for event {eventId}");
+            _logger.LogInformation($"Getting gig with id {gigId}");
             IQueryable<Gig> query = _eventContext.Gigs;
 
-            if (includeComedians)
+            if(includeComedians)
             {
                 query = query.Include(c => c.Comedian);
             }
 
-            query = query.Where(g => g.GigId == gigId && g.Event.EventId == eventId);
-
+            query = query.Where(g => g.GigId == gigId).Include(e => e.Event);
             return await query.FirstOrDefaultAsync();
         }
 
         public async Task<Gig[]> GetGigsByEvent(int eventId, bool includeComedians = false)
         {
-            _logger.LogInformation($"Getting gigs for event {eventId}");
+            _logger.LogInformation($"Getting gigs for event id {eventId}");
             IQueryable<Gig> query = _eventContext.Gigs;
 
             if (includeComedians)
@@ -142,17 +141,16 @@ namespace ComedyEvents.Services
                 query = query.Include(c => c.Comedian);
             }
 
-            query = query.Where(c => c.Event.EventId == eventId)
+            query = query.Where(e => e.Event.EventId == eventId)
+                        .Include(e => e.Event)
                         .OrderByDescending(g => g.GigHeadline);
 
             return await query.ToArrayAsync();
-
         }
 
         public async Task<Gig[]> GetGigsByVenue(int venueId, bool includeComedians = false)
         {
-            _logger.LogInformation($"Getting gigs for venue {venueId}");
-
+            _logger.LogInformation($"Getting gigs for venue id {venueId}");
             IQueryable<Gig> query = _eventContext.Gigs;
 
             if (includeComedians)
@@ -160,7 +158,8 @@ namespace ComedyEvents.Services
                 query = query.Include(c => c.Comedian);
             }
 
-            query = query.Where(e => e.Event.Venue.VenueId == venueId)
+            query = query.Where(v => v.Event.Venue.VenueId == venueId)
+                        .Include(v => v.Event.Venue)
                         .OrderByDescending(g => g.GigHeadline);
 
             return await query.ToArrayAsync();

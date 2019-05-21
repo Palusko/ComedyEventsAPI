@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using ComedyEvents.Context;
 using ComedyEvents.Services;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +20,7 @@ namespace ComedyEvents
         {
             services.AddDbContext<EventContext>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2)
                              .AddJsonOptions(o => o.SerializerSettings.ReferenceLoopHandling =
                                             Newtonsoft.Json.ReferenceLoopHandling.Ignore);

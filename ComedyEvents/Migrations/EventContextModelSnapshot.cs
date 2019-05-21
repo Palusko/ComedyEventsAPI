@@ -107,6 +107,7 @@ namespace ComedyEvents.Migrations
                         {
                             GigId = 1,
                             ComedianId = 1,
+                            EventId = 1,
                             GigHeadline = "Pavols Funny Show",
                             GigLengthInMinutes = 60
                         },
@@ -114,6 +115,7 @@ namespace ComedyEvents.Migrations
                         {
                             GigId = 2,
                             ComedianId = 2,
+                            EventId = 1,
                             GigHeadline = "Lifetime Of Fun",
                             GigLengthInMinutes = 45
                         });

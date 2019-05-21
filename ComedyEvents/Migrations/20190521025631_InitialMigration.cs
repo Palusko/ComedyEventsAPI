@@ -114,12 +114,12 @@ namespace ComedyEvents.Migrations
             migrationBuilder.InsertData(
                 table: "Gigs",
                 columns: new[] { "GigId", "ComedianId", "EventId", "GigHeadline", "GigLengthInMinutes" },
-                values: new object[] { 2, 2, null, "Lifetime Of Fun", 45 });
+                values: new object[] { 1, 1, 1, "Pavols Funny Show", 60 });
 
             migrationBuilder.InsertData(
                 table: "Gigs",
                 columns: new[] { "GigId", "ComedianId", "EventId", "GigHeadline", "GigLengthInMinutes" },
-                values: new object[] { 1, 1, null, "Pavols Funny Show", 60 });
+                values: new object[] { 2, 2, 1, "Lifetime Of Fun", 45 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_VenueId",

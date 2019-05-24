@@ -12,7 +12,9 @@ namespace ComedyEvents.Services
     {
         public EventProfile()
         {
-            //this.CreateMap<Event, EventDto>().ReverseMap();
+            CreateMap<Event, EventDto>()
+                .ReverseMap()
+                .ForMember(v => v.Venue, o => o.Ignore());
         }
     }
 }

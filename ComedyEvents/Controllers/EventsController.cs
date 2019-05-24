@@ -90,22 +90,64 @@ namespace ComedyEvents.Controllers
         public async Task<ActionResult<EventDto>> Post(EventDto dto)
         {
             try
-            {
-                
+            {                
                 var mappedEntity = _mapper.Map<Event>(dto);
                 _eventRepository.Add(mappedEntity);
-
+                
                 if (await _eventRepository.Save())
                 {
-                    //return Created($"/api/events/{mappedEntity.EventId}", _mapper.Map<EventDto>(mappedEntity));
-                    var location = _linkGenerator.GetPathByAction("Get", "Events", new { eventId = dto.EventId });
+                    var location = _linkGenerator.GetPathByAction("Get", "Events", new { mappedEntity.EventId });
                     return Created(location, _mapper.Map<EventDto>(mappedEntity));
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
+            {                
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPut("{eventId}")]
+        public async Task<ActionResult<EventDto>> Put(int eventId, EventDto dto)
+        {
+            try
             {
-                
-                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException);
+                var oldEvent = await _eventRepository.GetEvent(eventId);
+                if (oldEvent == null) return NotFound($"Could not find event with id {eventId}");
+
+                var newEvent = _mapper.Map(dto, oldEvent);
+                _eventRepository.Update(newEvent);
+                if (await _eventRepository.Save())
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{eventId}")]
+        public async Task<ActionResult<EventDto>> Delete(int eventId)
+        {
+            try
+            {
+                var oldEvent = await _eventRepository.GetEvent(eventId);
+                if (oldEvent == null) return NotFound($"Could not find event with id {eventId}");
+
+                _eventRepository.Delete(oldEvent);
+                if (await _eventRepository.Save())
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
             }
 
             return BadRequest();

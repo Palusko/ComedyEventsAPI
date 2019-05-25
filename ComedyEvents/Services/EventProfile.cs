@@ -15,6 +15,11 @@ namespace ComedyEvents.Services
             CreateMap<Event, EventDto>()
                 .ReverseMap()
                 .ForMember(v => v.Venue, o => o.Ignore());
+
+            CreateMap<Gig, GigDto>()
+                .ReverseMap()
+                .ForMember(e => e.Event, o => o.Ignore())
+                .ForMember(c => c.Comedian, o => o.Ignore());
         }
     }
 }

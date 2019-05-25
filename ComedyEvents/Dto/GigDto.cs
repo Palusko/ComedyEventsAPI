@@ -18,7 +18,10 @@ namespace ComedyEvents.Dto
         [Range(15,120)]
         public int GigLengthInMinutes { get; set; }
 
+        public int EventId { get; set; }
         public EventDto Event { get; set; }
+
+        public int ComedianId { get; set; }
         public ComedianDto Comedian { get; set; }
     }
 }

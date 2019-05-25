@@ -14,13 +14,13 @@ namespace ComedyEvents.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EventsController : ControllerBase
+    public class ComediansController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
 
-        public EventsController(IEventRepository eventRepository, IMapper mapper, LinkGenerator linkGenerator)
+        public ComediansController(IEventRepository eventRepository, IMapper mapper, LinkGenerator linkGenerator)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
@@ -28,38 +28,31 @@ namespace ComedyEvents.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<EventDto[]>> Get (bool includeGigs = false)
+        public async Task<ActionResult<ComedianDto[]>> Get()
         {
             try
             {
-                var results = await _eventRepository.GetEvents(includeGigs);
+                var results = await _eventRepository.GetComedians();
 
-                var mappedEntities = _mapper.Map<EventDto[]>(results);
-                //var eventDto = new EventDto();
-                //foreach(var e in results)
-                //{
-                //    eventDto.City = e.Venue.City;
-                //    eventDto.EventDate = e.EventDate;
-                //    eventDto.EventName = e.EventName;
-                //}
+                var mappedEntities = _mapper.Map<ComedianDto[]>(results);
                 return Ok(mappedEntities);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
             }
         }
 
-        [HttpGet("{eventId}")]
-        public async Task<ActionResult<EventDto>> Get(int eventId, bool includeGigs = false)
+        [HttpGet("{comedianId}")]
+        public async Task<ActionResult<ComedianDto>> Get(int comedianId)
         {
             try
             {
-                var result = await _eventRepository.GetEvent(eventId, includeGigs);
+                var result = await _eventRepository.GetComedian(comedianId);
 
                 if (result == null) return NotFound();
 
-                var mappedEntity = _mapper.Map<EventDto>(result);
+                var mappedEntity = _mapper.Map<ComedianDto>(result);
                 return Ok(mappedEntity);
             }
             catch (Exception)
@@ -69,15 +62,15 @@ namespace ComedyEvents.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<EventDto[]>> SearchByDate (DateTime date, bool includeGigs = false)
+        public async Task<ActionResult<ComedianDto[]>> GetComediansByEvent(int eventId)
         {
             try
             {
-                var results = await _eventRepository.GetEventsByDate(date, includeGigs);
+                var results = await _eventRepository.GetComediansByEvent(eventId);
 
                 if (!results.Any()) return NotFound();
 
-                var mappedEntities = _mapper.Map<EventDto[]>(results);
+                var mappedEntities = _mapper.Map<ComedianDto[]>(results);
                 return Ok(mappedEntities);
             }
             catch (Exception)
@@ -87,37 +80,37 @@ namespace ComedyEvents.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<EventDto>> Post(EventDto dto)
+        public async Task<ActionResult<ComedianDto>> Post(ComedianDto dto)
         {
             try
-            {                
-                var mappedEntity = _mapper.Map<Event>(dto);
+            {
+                var mappedEntity = _mapper.Map<Comedian>(dto);
                 _eventRepository.Add(mappedEntity);
-                
+
                 if (await _eventRepository.Save())
                 {
-                    var location = _linkGenerator.GetPathByAction("Get", "Events", new { mappedEntity.EventId });
-                    return Created(location, _mapper.Map<EventDto>(mappedEntity));
+                    var location = _linkGenerator.GetPathByAction("Get", "Comedians", new { mappedEntity.ComedianId });
+                    return Created(location, _mapper.Map<ComedianDto>(mappedEntity));
                 }
             }
             catch (Exception)
-            {                
+            {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
             }
 
             return BadRequest();
         }
 
-        [HttpPut("{eventId}")]
-        public async Task<ActionResult<EventDto>> Put(int eventId, EventDto dto)
+        [HttpPut("{comedianId}")]
+        public async Task<ActionResult<ComedianDto>> Put(int comedianId, ComedianDto dto)
         {
             try
             {
-                var oldEvent = await _eventRepository.GetEvent(eventId);
-                if (oldEvent == null) return NotFound($"Could not find event with id {eventId}");
+                var oldComedian = await _eventRepository.GetComedian(comedianId);
+                if (oldComedian == null) return NotFound($"Could not find comedian with id {comedianId}");
 
-                var newEvent = _mapper.Map(dto, oldEvent);
-                _eventRepository.Update(newEvent);
+                var newComedian = _mapper.Map(dto, oldComedian);
+                _eventRepository.Update(newComedian);
                 if (await _eventRepository.Save())
                 {
                     return NoContent();
@@ -131,15 +124,15 @@ namespace ComedyEvents.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{eventId}")]
-        public async Task<IActionResult> Delete(int eventId)
+        [HttpDelete("{comedianId}")]
+        public async Task<IActionResult> Delete(int comedianId)
         {
             try
             {
-                var oldEvent = await _eventRepository.GetEvent(eventId);
-                if (oldEvent == null) return NotFound($"Could not find event with id {eventId}");
+                var oldComedian = await _eventRepository.GetComedian(comedianId);
+                if (oldComedian == null) return NotFound($"Could not find comedian with id {comedianId}");
 
-                _eventRepository.Delete(oldEvent);
+                _eventRepository.Delete(oldComedian);
                 if (await _eventRepository.Save())
                 {
                     return NoContent();
